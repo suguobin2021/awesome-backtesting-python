@@ -392,6 +392,33 @@ bt = Backtest(data, strategy, cash=10_000,
 
 Assuming 100% fill at the target price is unrealistic for illiquid stocks or large positions.
 
+### Integrity tooling: Backtest Integrity Guard
+
+**GitHub**: [suguobin2021/backtest-integrity-guard](https://github.com/suguobin2021/backtest-integrity-guard) | **PyPI**: [backtest-integrity-guard](https://pypi.org/project/backtest-integrity-guard/) | **Status**: Active
+
+Backtest Integrity Guard is a framework-agnostic CLI for making several common backtest-integrity assumptions machine-checkable before performance metrics are trusted. It checks OHLCV geometry and cadence, duplicate/conflicting timestamps, signal-close-to-execution timing, next-bar constraints, same-bar stop/target ambiguity, and SHA256-frozen inputs.
+
+**Strengths**:
+- Dependency-free and usable alongside any backtesting framework that can export CSV data
+- Deterministic JSON audit reports, with optional input SHA256 for reproducibility
+- Explicit fail-closed findings for look-ahead/same-bar timing and ambiguous exits
+
+**Weaknesses**:
+- It is an integrity checker, not a backtesting engine
+- It does not model commissions, slippage, market impact, or fills
+- It does not bundle exchange calendars; known session gaps must be declared explicitly
+
+**Installation**:
+```bash
+pip install backtest-integrity-guard
+```
+
+**Example — audit a five-minute OHLCV file and execution ledger**:
+```bash
+btguard ohlcv bars.csv --interval-seconds 300 --hash-input
+btguard ledger trades.csv --hash-input
+```
+
 ---
 
 ## Performance Metrics Libraries
